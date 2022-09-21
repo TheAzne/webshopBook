@@ -2,7 +2,7 @@ using BookShop.DataAccess;
 using BookShop.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookShop.Controllers;
+namespace BookShops.Controllers;
 
 public class CategoryController : Controller
 {
