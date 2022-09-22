@@ -6,7 +6,6 @@ namespace BookShops.Controllers;
 
 public class CategoryController : Controller
 {
-
     private readonly ApplicationDbContext _db;
 
     public CategoryController(ApplicationDbContext db)
@@ -36,9 +35,6 @@ public class CategoryController : Controller
         {
             ModelState.AddModelError("name", "The display order cannot match the name");
         }
-
-
-
         if (ModelState.IsValid)
         {
             _db.Categories.Add(obj);
@@ -47,7 +43,6 @@ public class CategoryController : Controller
             return RedirectToAction("Index");
         }
         return View(obj);
-
     }
 
 
