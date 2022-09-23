@@ -6,9 +6,9 @@ namespace BookShops.Controllers;
 
 public class CategoryController : Controller
 {
-    private readonly ApplicationDbContext _db;
+    private readonly ICategoryRepository _db;
 
-    public CategoryController(ApplicationDbContext db)
+    public CategoryController(ICategoryRepository db)
     {
         _db = db;
     }
@@ -16,7 +16,7 @@ public class CategoryController : Controller
 
     public IActionResult Index()
     {
-        IEnumerable<Category> categoryList = _db.Categories;
+        IEnumerable<Category> categoryList = _db.GetAll();
         return View(categoryList);
     }
 
@@ -37,8 +37,8 @@ public class CategoryController : Controller
         }
         if (ModelState.IsValid)
         {
-            _db.Categories.Add(obj);
-            _db.SaveChanges();
+            _db.Add(obj);
+            _db.Save();
             TempData["success"] = "Category created successfully";
             return RedirectToAction("Index");
         }
@@ -53,7 +53,7 @@ public class CategoryController : Controller
         {
             return NotFound();
         }
-        var categoryfromDb = _db.Categories.Find(id);
+        var categoryfromDb = _db.GetFirstOrDefault(u=> u.Name=="id");
 
         if (categoryfromDb == null)
         {
@@ -75,8 +75,8 @@ public class CategoryController : Controller
 
         if (ModelState.IsValid)
         {
-            _db.Categories.Update(obj);
-            _db.SaveChanges();
+            _db.Update(obj);
+            _db.Save();
             TempData["success"] = "Category updated successfully";
             return RedirectToAction("Index");
         }
@@ -92,7 +92,8 @@ public class CategoryController : Controller
         {
             return NotFound();
         }
-        var categoryfromDb = _db.Categories.Find(id);
+        // var categoryfromDb = _db.Categories.Find(id);
+        var categoryfromDb = _db.GetFirstOrDefault(u=> u.id ==id);
 
         if (categoryfromDb == null)
         {
@@ -106,7 +107,7 @@ public class CategoryController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult DeletePost(int? id)
     {
-        var categoryfromDb = _db.Categories.Find(id);
+        var categoryfromDb = _db.GetFirstOrDefault(u=> u.id ==id);
 
         if (categoryfromDb == null)
         {
@@ -114,7 +115,7 @@ public class CategoryController : Controller
         }
 
         _db.Categories.Remove(categoryfromDb);
-        _db.SaveChanges();
+        _db.Save();
         TempData["success"] = "Category deleted successfully";
         return RedirectToAction("Index");
 
