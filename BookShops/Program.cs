@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
 ));
-
+builder.services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
 
