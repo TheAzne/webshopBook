@@ -10,16 +10,16 @@ namespace BookShops.Controllers;
 
 public class CategoryController : Controller
 {
-    private readonly ICategoryRepository _db;
-    public CategoryController(ICategoryRepository db)
+    private readonly IUnitOfWork _unitOfWork;
+    public CategoryController(IUnitOfWork unitOfWork)
     {
-        _db = db;
+        _unitOfWork = unitOfWork;
     }
 
 
     public IActionResult Index()
     {
-        IEnumerable<Category> categoryList = _db.GetAll();
+        IEnumerable<Category> categoryList = _unitOfWork.Category.GetAll();
         return View(categoryList);
     }
 
@@ -40,8 +40,8 @@ public class CategoryController : Controller
         }
         if (ModelState.IsValid)
         {
-            _db.Add(obj);
-            _db.Save();
+            _unitOfWork.Category.Add(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Category created successfully";
             return RedirectToAction("Index");
         }
@@ -56,7 +56,7 @@ public class CategoryController : Controller
         {
             return NotFound();
         }
-        var categoryfromDb = _db.GetFirstOrDefault(u=> u.Id==id);
+        var categoryfromDb = _unitOfWork.Category.GetFirstOrDefault(u=> u.Id==id);
 
         if (categoryfromDb == null)
         {
@@ -78,15 +78,14 @@ public class CategoryController : Controller
 
         if (ModelState.IsValid)
         {
-            _db.Update(obj);
-            _db.Save();
+            _unitOfWork.Category.Update(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Category updated successfully";
             return RedirectToAction("Index");
         }
         return View(obj);
 
     }
-
 
     //GET
     public IActionResult Delete(int? id)
@@ -96,7 +95,7 @@ public class CategoryController : Controller
             return NotFound();
         }
         // var categoryfromDb = _db.Categories.Find(id);
-        var categoryfromDb = _db.GetFirstOrDefault(u=> u.Id ==id);
+        var categoryfromDb = _unitOfWork.Category.GetFirstOrDefault(u=> u.Id ==id);
 
         if (categoryfromDb == null)
         {
@@ -110,15 +109,15 @@ public class CategoryController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult DeletePost(int? id)
     {
-        var categoryfromDb = _db.GetFirstOrDefault(u=> u.Id ==id);
+        var categoryfromDb = _unitOfWork.Category.GetFirstOrDefault(u=> u.Id ==id);
 
         if (categoryfromDb == null)
         {
             return NotFound();
         }
 
-        _db.Remove(categoryfromDb);
-        _db.Save();
+        _unitOfWork.Category.Remove(categoryfromDb);
+        _unitOfWork.Save();
         TempData["success"] = "Category deleted successfully";
         return RedirectToAction("Index");
 
