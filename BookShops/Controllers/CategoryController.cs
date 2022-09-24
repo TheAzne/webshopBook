@@ -56,7 +56,7 @@ public class CategoryController : Controller
         {
             return NotFound();
         }
-        var categoryfromDb = _db.GetFirstOrDefault(u=> u.Name=="id");
+        var categoryfromDb = _db.GetFirstOrDefault(u=> u.Id==id);
 
         if (categoryfromDb == null)
         {
