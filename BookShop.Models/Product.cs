@@ -24,7 +24,7 @@ namespace BookShop.Models
 
         [Required]
         [Range(1, 10000)]
-        public double price { get; set; }
+        public double Price { get; set; }
 
         [Required]
         [Range(1, 10000)]
