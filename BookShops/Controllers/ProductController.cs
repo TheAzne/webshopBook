@@ -19,9 +19,11 @@ namespace BookShops.Controllers;
 public class ProductController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
-    public ProductController(IUnitOfWork unitOfWork)
+    private readonly IWebHostEnvironment _hostEnviroment;
+    public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment hostEnviroment)
     {
         _unitOfWork = unitOfWork;
+        _hostEnviroment = hostEnviroment;
     }
 
 
@@ -69,14 +71,26 @@ public class ProductController : Controller
     //POST
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Upsert(ProductVM obj, IFormFile file)
+    public IActionResult Upsert(ProductVM obj, IFormFile? file)
     {
-
         if (ModelState.IsValid)
         {
-            // _unitOfWork.CoverType.Update(obj);
+            string wwwRootPath = _hostEnviroment.WebRootPath;
+            if (file != null)
+            {
+                string fileName = Guid.NewGuid().ToString();
+                var uploads = Path.Combine(wwwRootPath, @"images/products");
+                var extension = Path.GetExtension(file.FileName);
+
+                using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                {
+                    file.CopyTo(fileStreams);
+                }
+                obj.Product.ImageUrl = @"/images/products/" + fileName + extension;
+            }
+            _unitOfWork.Product.Add(obj.Product);
             _unitOfWork.Save();
-            TempData["success"] = "CoverType updated successfully";
+            TempData["success"] = "Product created successfully";
             return RedirectToAction("Index");
         }
         return View(obj);

@@ -44,11 +44,12 @@
         </div>
         <div class="mb-3 col-6">
             <label asp-for="Product.Price100"></label>
-            <input type="file" class="form-control" />
+			<input asp-for="Product.Price100" class="form-control" />
+			<span asp-validation-for="Product.Price100" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Product.ImageUrl"></label>
-            <input asp-for="Product.ImageUrl" id="uploadBox" class="form-control" />
+			<label asp-for="Product.ImageUrl"></label>
+			<input type="file" id="uploadBox" name="file" class="form-control" />
         </div>
         <div class="mb-3 col-6">
             <label asp-for="Product.CategoryId"></label>
