@@ -1,6 +1,8 @@
 @{
     ViewData["Title"] = "Index";
 }
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+<link rel="stylesheet" href="sweetalert2.min.css">
 
 
 <div class="container p3">
@@ -33,12 +35,16 @@
                 <th>
                     Category
                 </th>
-                @* <th></th> *@
+                <th>
+
+                </th>
             </tr>
         </thead>
     </table>
 </div>
 
 @section Scripts{
-    <script src="~/js/product.js"></script>
+<script src="~/js/product.js"></script>
+<script src="sweetalert2.all.min.js"></script>
+
 }
