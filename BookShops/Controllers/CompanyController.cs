@@ -20,11 +20,11 @@ namespace BookShops.Controllers;
 public class CompanyController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
+
     public CompanyController(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
-
 
     public IActionResult Index()
     {
@@ -34,23 +34,17 @@ public class CompanyController : Controller
     //GET
     public IActionResult Upsert(int? id)
     {
-
         Company company = new();
 
         if (id == null || id == 0)
         {
-            //Create company
             return View(company);
-
         }
         else
         {
             company = _unitOfWork.Company.GetFirstOrDefault(u => u.Id == id);
             return View(company);
-
-            //Update company
         }
-
     }
 
     //POST
@@ -58,6 +52,7 @@ public class CompanyController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Upsert(Company obj, IFormFile? file)
     {
+
         if (ModelState.IsValid)
         {
 
@@ -65,7 +60,6 @@ public class CompanyController : Controller
             {
                 _unitOfWork.Company.Add(obj);
                 TempData["success"] = "Company created successfully";
-
             }
             else
             {
@@ -73,11 +67,12 @@ public class CompanyController : Controller
                 TempData["success"] = "Company updated successfully";
             }
             _unitOfWork.Save();
+
             return RedirectToAction("Index");
         }
         return View(obj);
-
     }
+
 
 
     #region API CALLS
@@ -87,27 +82,22 @@ public class CompanyController : Controller
         var companyList = _unitOfWork.Company.GetAll();
         return Json(new { data = companyList });
     }
+
     //POST
     [HttpDelete]
     public IActionResult Delete(int? id)
     {
         var obj = _unitOfWork.Company.GetFirstOrDefault(u => u.Id == id);
-
         if (obj == null)
         {
             return Json(new { success = false, message = "Error while deleting" });
-
         }
-
 
         _unitOfWork.Company.Remove(obj);
         _unitOfWork.Save();
-        return Json(new { success = true, message = "Delete successful" });
+        return Json(new { success = true, message = "Delete Successful" });
 
     }
-
-
     #endregion
-
 }
 
