@@ -16,7 +16,6 @@ public class CategoryController : Controller
         _unitOfWork = unitOfWork;
     }
 
-
     public IActionResult Index()
     {
         IEnumerable<Category> categoryList = _unitOfWork.Category.GetAll();

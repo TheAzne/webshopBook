@@ -93,9 +93,6 @@ public class ProductController : Controller
                         System.IO.File.Delete(oldImagePath);
                     }
                 }
-
-
-
                 using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
                 {
                     file.CopyTo(fileStreams);
