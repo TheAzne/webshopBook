@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookShop.Models;
 using BookShop.DataAccess.Repository.IRepository;
+using BookShop.Models.ViewModels;
 
 namespace BookShop.DataAccess.Repository
 {
@@ -22,6 +23,11 @@ namespace BookShop.DataAccess.Repository
             Company = new CompanyRepository(_db);
             ApplicationUser = new ApplicationUserRepository(_db);
             ShoppingCart = new ShoppingCartRepository(_db);
+            OrderHeader = new OrderHeaderRepository(_db);
+            OrderDetail = new OrderDetailRepository(_db);
+
+
+
 
 
         }
@@ -32,6 +38,8 @@ namespace BookShop.DataAccess.Repository
         public IApplicationUserRepository ApplicationUser { get; set; }
 
         public IShoppingCartRepository ShoppingCart { get; set; }
+        public IOrderHeaderRepository OrderHeader { get; set; }
+        public IOrderDetailRepository OrderDetail { get; set; }
 
         public void Save()
         {
