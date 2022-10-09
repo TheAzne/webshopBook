@@ -34,5 +34,15 @@ namespace BookShop.DataAccess.Repository
                 }
             }
         }
+
+          public void UpdateStripePaymentID(int id, string sessionId, string paymentIntentId)
+        {
+            var orderfromDb = _db.OrderHeaders.FirstOrDefault(u => u.Id == id);
+
+            orderfromDb.SessionId = sessionId;
+            orderfromDb.PaymentIntentId = paymentIntentId;
+
+
+        }
     }
 }
